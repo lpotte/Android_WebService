@@ -11,9 +11,14 @@ class Provider () {
             preference = context.getSharedPreferences("myAppPrefs", Context.MODE_PRIVATE)
         }
 
-        fun setUserPass(userName: String?, pass: String?) {
+        fun setUserPass(userName: String?, pass: String?, token : String?) {
             preference.edit().putString("username", userName).apply()
             preference.edit().putString("pass", pass).apply()
+            preference.edit().putString("token", token).apply()
+        }
+
+        fun setToken(token: String){
+            preference.edit().putString("token", token).apply()
         }
 
         fun getUserName(): String? {
@@ -22,6 +27,10 @@ class Provider () {
 
         fun getPassword(): String? {
             return preference.getString("pass", "nn")
+        }
+
+        fun getToken(): String? {
+            return preference.getString("token", "nn")
         }
         
     }

@@ -14,6 +14,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.Android_WebService.R
 import com.example.Android_WebService.repository.api.Post
+import com.example.Android_WebService.viewmodel.CourseViewModel
 import com.example.Android_WebService.viewmodel.PostViewModel
 import com.example.Android_WebService.viewmodel.loginViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,8 +25,11 @@ class Home : Fragment() {
     lateinit var navController: NavController
     val loginViewModel: loginViewModel by viewModels()
     val postViewModel: PostViewModel by viewModels()
+    val courseViewModel: CourseViewModel by viewModels()
     private var adapter = Adapter(ArrayList())
     lateinit var posts : List<Post>
+    var token = ""
+    var username = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,23 +52,38 @@ class Home : Fragment() {
         requireView().posts_recycler.layoutManager = LinearLayoutManager(requireContext())
 
         // get the live data and start observing
-        postViewModel.postsLiveData.observe(viewLifecycleOwner, Observer { it ->
+      /*  postViewModel.postsLiveData.observe(viewLifecycleOwner, Observer { it ->
             adapter.posts.clear()
             adapter.posts.addAll(it)
             adapter.notifyDataSetChanged()
+        })*/
+        //using the CourseViewModel
+        courseViewModel.coursesLiveData.observe(getViewLifecycleOwner(), Observer { it ->
+            adapter.courses.clear()
+            adapter.courses.addAll(it)
+            adapter.notifyDataSetChanged()
+        })
+
+        loginViewModel.userLiveData.observe(getViewLifecycleOwner(), Observer { user ->
+            token = user.token
+            username = user.name
         })
 
         //Floating Buttom
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
-            postViewModel.getPost()
+            //val usuario : String = "elprofesor"
+            courseViewModel.addCourse(username,token)
+            courseViewModel.getCourses(username,token)
+            //postViewModel.getPost()
         }
-
 
         //Navegación de sign out
         navController = Navigation.findNavController(view)
         view.findViewById<Button>(R.id.sign_out).setOnClickListener {
             navController.navigate(R.id.action_home2_to_signIn)
         }
+
+
 
 
     }

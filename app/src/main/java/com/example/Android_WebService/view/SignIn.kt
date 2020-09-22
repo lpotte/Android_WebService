@@ -7,15 +7,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.example.Android_WebService.R
+import com.example.Android_WebService.model.User
 import com.example.Android_WebService.viewmodel.loginViewModel
 
 class SignIn : Fragment() {
     lateinit var navController: NavController
     val loginViewModel: loginViewModel by viewModels()
+    var theToken : String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,9 +46,24 @@ class SignIn : Fragment() {
         var user = requireView().findViewById<EditText>(R.id.username).text.toString()
         var pass = requireView().findViewById<EditText>(R.id.pass).text.toString()
 
-        if(loginViewModel.signIn(user, pass)){
-            navController.navigate(R.id.action_signIn_to_home2)
+        if(loginViewModel.signInSP(user, pass)){
+            loginViewModel.signIn("molinares@correo.com",pass,user).observe(getViewLifecycleOwner(), Observer { user: User ->
+
+                //Log.d("MyOut", "Fragment  signIn " + user + " error " + user.error)
+                theToken = user.token
+                loginViewModel.setToken(theToken)
+                if (user.token != "") {
+                    Toast.makeText(context, "Token " + user.token, Toast.LENGTH_LONG).show()
+                    navController.navigate(R.id.action_signIn_to_home2)
+                    //courseViewModel.getCourses("elprofesor",theToken)
+                } else {
+                    Toast.makeText(context, "Token failure " + user.error, Toast.LENGTH_LONG)
+                        .show()
+                }
+
+            })
         }
+
         //requireView().findViewById<TextView>(R.id.textView2).text = loginViewModel.getUserPassword().toString()
     }
 }
