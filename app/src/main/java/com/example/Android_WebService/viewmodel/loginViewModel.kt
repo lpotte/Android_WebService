@@ -22,12 +22,16 @@ class loginViewModel: ViewModel() {
 
     fun getUser() = userLiveData
 
+    fun setuser(user: User){
+        userLiveData.value = user
+    }
+
     fun signInSP(username: String, pass: String): Boolean {
         return getUsername().equals(username) && getUserPassword().equals(pass)
     }
     fun signUpSP(user: User) {
         repository.addUser(user)
-        userLiveData.value = user
+        setuser(user)
     }
 
     fun getUsername() = repository.getUserName()

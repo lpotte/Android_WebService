@@ -52,6 +52,7 @@ class SignIn : Fragment() {
                 //Log.d("MyOut", "Fragment  signIn " + user + " error " + user.error)
                 theToken = user.token
                 loginViewModel.setToken(theToken)
+                loginViewModel.setuser(user)
                 if (user.token != "") {
                     Toast.makeText(context, "Token " + user.token, Toast.LENGTH_LONG).show()
                     navController.navigate(R.id.action_signIn_to_home2)

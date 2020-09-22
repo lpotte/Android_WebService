@@ -71,6 +71,7 @@ class Home : Fragment() {
 
         //Floating Buttom
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
+
             //val usuario : String = "elprofesor"
             courseViewModel.addCourse(username,token)
             courseViewModel.getCourses(username,token)
