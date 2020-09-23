@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -38,16 +39,15 @@ class SignUp : Fragment() {
         navController = Navigation.findNavController(view)
 
         view.findViewById<Button>(R.id.submit ).setOnClickListener {
-            val email : String =  "molinares@correo.com"
+            val email : String =  "user2@correo.com"
             var user = requireView().findViewById<EditText>(R.id.username).text.toString()
             var pass = requireView().findViewById<EditText>(R.id.pass).text.toString()
 
-            loginViewModel.signUp(email,pass, user).observe(getViewLifecycleOwner(), Observer { user :User ->
-
-                Log.d("MyOut", "Fragment  signUp " + user + " error " + user.error)
+            loginViewModel.signUpSP(email,pass, user)
+            loginViewModel.userLiveData.observe(getViewLifecycleOwner(), Observer { user ->
+                //Log.d("MyOut", "Fragment  signUp " + user + " exitoso registro " + user.error)
+                Toast.makeText(context, "registro exitoso " + user.token, Toast.LENGTH_LONG).show()
                 theToken = user.token
-                loginViewModel.signUpSP(user)
-
             })
             navController.navigate(R.id.action_signUp_to_signIn)
         }

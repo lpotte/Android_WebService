@@ -33,7 +33,12 @@ class SignIn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
 
+        loginViewModel.userLiveData.observe(getViewLifecycleOwner(),  Observer { user ->
+            Toast.makeText(context, "Token " + user.token, Toast.LENGTH_LONG).show()
+        })
+
         view.findViewById<Button>(R.id.sign_in).setOnClickListener {
+            //navController.navigate(R.id.action_signIn_to_home2)
             looged()
         }
 
@@ -46,25 +51,40 @@ class SignIn : Fragment() {
         var user = requireView().findViewById<EditText>(R.id.username).text.toString()
         var pass = requireView().findViewById<EditText>(R.id.pass).text.toString()
 
-        if(loginViewModel.signInSP(user, pass)){
-            loginViewModel.signIn("molinares@correo.com",pass,user).observe(getViewLifecycleOwner(), Observer { user: User ->
+       if(loginViewModel.signInSP("user2@correo.com", pass, user)){
+          loginViewModel.userLiveData.observe(getViewLifecycleOwner(), Observer { it ->
+              Toast.makeText(context, "name 1 " + it.username, Toast.LENGTH_LONG).show()
+              theToken = it.token
+              loginViewModel.setToken(theToken)
+              if (it.token != "") {
+                  Toast.makeText(context, "Token " + it.token, Toast.LENGTH_LONG).show()
+                  //loginViewModel.setuser(it)
+                  navController.navigate(R.id.action_signIn_to_home2)
+                  //courseViewModel.getCourses("elprofesor",theToken)
+              } else {
+                  Toast.makeText(context, "Token failure " + it.error, Toast.LENGTH_LONG)
+                      .show()
+              }
+           })
+
+          // navController.navigate(R.id.action_signIn_to_home2)
+           /* loginViewModel.signIn("molinares@correo.com",pass,user).observe(getViewLifecycleOwner(), Observer { user: User ->
 
                 //Log.d("MyOut", "Fragment  signIn " + user + " error " + user.error)
                 theToken = user.token
                 loginViewModel.setToken(theToken)
-                loginViewModel.setuser(user)
                 if (user.token != "") {
                     Toast.makeText(context, "Token " + user.token, Toast.LENGTH_LONG).show()
+                    loginViewModel.setuser(user)
                     navController.navigate(R.id.action_signIn_to_home2)
                     //courseViewModel.getCourses("elprofesor",theToken)
                 } else {
                     Toast.makeText(context, "Token failure " + user.error, Toast.LENGTH_LONG)
                         .show()
                 }
+            })*/
+       }
 
-            })
-        }
-
-        //requireView().findViewById<TextView>(R.id.textView2).text = loginViewModel.getUserPassword().toString()
+      //requireView().findViewById<TextView>(R.id.textView2).text = loginViewModel.getUserPassword().toString()
     }
 }

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
@@ -29,7 +30,7 @@ class Home : Fragment() {
     private var adapter = Adapter(ArrayList())
     lateinit var posts : List<Post>
     var token = ""
-    var username = ""
+    var username = "h"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +58,7 @@ class Home : Fragment() {
             adapter.posts.addAll(it)
             adapter.notifyDataSetChanged()
         })*/
+
         //using the CourseViewModel
         courseViewModel.coursesLiveData.observe(getViewLifecycleOwner(), Observer { it ->
             adapter.courses.clear()
@@ -64,15 +66,14 @@ class Home : Fragment() {
             adapter.notifyDataSetChanged()
         })
 
-        loginViewModel.userLiveData.observe(getViewLifecycleOwner(), Observer { user ->
-            token = user.token
-            username = user.name
-        })
-
         //Floating Buttom
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
 
             //val usuario : String = "elprofesor"
+            //loginViewModel.getUsername()
+            //loginViewModel.getToken()
+            token = loginViewModel.users[0].token
+            username = loginViewModel.users[0].name
             courseViewModel.addCourse(username,token)
             courseViewModel.getCourses(username,token)
             //postViewModel.getPost()

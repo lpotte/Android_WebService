@@ -1,24 +1,29 @@
 package com.example.Android_WebService.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.Android_WebService.model.User
 import com.example.Android_WebService.repository.LoginRepository
 import com.example.Android_WebService.repository.Repository
+import com.example.Android_WebService.repository.api.Post
 import com.example.Android_WebService.sharedPreference.Provider.Companion.getPassword
 import com.example.Android_WebService.sharedPreference.Provider.Companion.getUserName
 
 class loginViewModel: ViewModel() {
 
     var userLiveData = MutableLiveData<User>()
+    val users = mutableListOf<User>()
+    //val postsLiveData = MutableLiveData<List<Post>>()
 
     private val repository = LoginRepository()
 
-    fun signIn(email: String, clave: String, usuario : String) =
-        repository.signIn(User(email, clave, usuario, usuario,"",""))
+    fun signIn(user: User) =
+        repository.signIn(user)
 
-    fun signUp(email: String, clave: String, usuario : String) =
-        repository.signUp(User(email, clave, usuario, usuario,"",""))
+    fun signUp(user: User) =
+        repository.signUp(user)
+
 
     fun getUser() = userLiveData
 
@@ -26,12 +31,19 @@ class loginViewModel: ViewModel() {
         userLiveData.value = user
     }
 
-    fun signInSP(username: String, pass: String): Boolean {
-        return getUsername().equals(username) && getUserPassword().equals(pass)
+    fun signInSP(email: String, clave: String, usuario : String): Boolean {
+        var user = User(email, clave, usuario, usuario,"","")
+        userLiveData = signIn(user)
+        users.clear()
+        users.add(user)
+        return getUsername().equals(usuario) && getUserPassword().equals(clave)
     }
-    fun signUpSP(user: User) {
+    fun signUpSP(email: String, clave: String, usuario : String) {
+        var user = User(email, clave, usuario, usuario,"","")
+        userLiveData = signUp(user)
+        users.clear()
+        users.add(user)
         repository.addUser(user)
-        setuser(user)
     }
 
     fun getUsername() = repository.getUserName()
