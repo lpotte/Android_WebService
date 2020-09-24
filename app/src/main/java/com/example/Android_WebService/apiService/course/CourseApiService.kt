@@ -3,6 +3,7 @@ package com.example.Android_WebService.apiService.course
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.Android_WebService.model.Course
+import com.example.Android_WebService.model.GeneralUserD
 import com.example.Android_WebService.model.courseD
 import com.example.Android_WebService.model.studentResponse
 import okhttp3.OkHttpClient
@@ -19,7 +20,7 @@ class CourseApiService {
         val theResponse = MutableLiveData<List<Course>>()
         var theResponseDetails = MutableLiveData<courseD>()
         var courses = mutableListOf<Course>()
-        var students = mutableListOf<courseD>()
+        var studentData = MutableLiveData<GeneralUserD>()
 
         fun getRestEngine(): CourseApi {
             val interceptor = HttpLoggingInterceptor()
@@ -39,6 +40,8 @@ class CourseApiService {
     fun getCourseData() = theResponse
 
     fun getStudData() = theResponseDetails
+
+    fun getInfoStudentData() = studentData
 
     fun getStud(user: String, token: String, id: String){
         val auth = "Bearer "+token
@@ -155,6 +158,31 @@ class CourseApiService {
             }
 
 
+
+        })
+    }
+
+    fun getInfoStudent(user: String, idStud: String, token: String){
+        val auth = "Bearer "+token
+        getRestEngine().viewStudent(user,idStud, auth).enqueue(object: Callback<GeneralUserD>{
+            override fun onResponse(call: Call<GeneralUserD>, response: Response<GeneralUserD>) {
+                if (response.isSuccessful) {
+                    Log.d("MyOut", "OK isSuccessful ")
+                    val loginResponse = response.body()
+                    if (loginResponse != null) {
+                        val t = response.body()
+                        studentData.postValue(t)
+                    }
+                } else {
+                    Log.d("MyOut", "NOK  "+response.code() )
+                    Log.d("MyOut", "NOK  "+response.toString() )
+                    Log.d("MyOut", "NOK  "+response.errorBody().toString() )
+                }
+            }
+
+            override fun onFailure(call: Call<GeneralUserD>, t: Throwable){
+                Log.d("MyOut","Failure "+t.message)
+            }
 
         })
     }

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -31,6 +32,8 @@ class Course : Fragment(), OnUserClickListener {
     var email = ""
     var password = ""
     var courseid = ""
+    var nameCourse = ""
+    var profesorName =""
     val courseViewModel: CourseViewModel by viewModels()
     val loginViewModel: loginViewModel by viewModels()
 
@@ -57,6 +60,8 @@ class Course : Fragment(), OnUserClickListener {
         var email = requireArguments().getString("email").toString()
         var password = requireArguments().getString("pass").toString()
         welcome()
+        view.findViewById<TextView>(R.id.courseName).setText(nameCourse)
+        view.findViewById<TextView>(R.id.professorName).setText(profesorName)
         view.findViewById<FloatingActionButton>(R.id.addEstudiante).setOnClickListener {
             val rootObject= JSONObject()
             rootObject.put("courseId",courseid)
@@ -66,7 +71,7 @@ class Course : Fragment(), OnUserClickListener {
     }
 
     override fun onItemCLick(user: GeneralUser, position: Int) {
-        Toast.makeText(context, "Test", Toast.LENGTH_LONG)
+        Toast.makeText(context, "Test "+ viewStudentInfo(), Toast.LENGTH_LONG)
             .show()
         val mDialogView = LayoutInflater.from(this.context).inflate(R.layout.userinfo_dialog, null)
 
@@ -84,12 +89,15 @@ class Course : Fragment(), OnUserClickListener {
             if (token != "") {
                 courseViewModel.getStudents(username, token, courseid)
                 courseViewModel.getStudentsData()
+
                 //using the CourseViewModel
                courseViewModel.studentsLiveData.observe(getViewLifecycleOwner(), Observer { it ->
                     Toast.makeText(context, "users  failure ", Toast.LENGTH_LONG)
                     adapter.students.clear()
                     adapter.students.addAll(it.students)
                     adapter.notifyDataSetChanged()
+                    nameCourse = it.name
+                    profesorName = it.professor.name
                 })
 
             }else {
@@ -98,6 +106,27 @@ class Course : Fragment(), OnUserClickListener {
                 //newToken()
                 //welcome()
             }
+    }
+
+    fun viewStudentInfo(): String {
+        //newToken()
+        var studentDetails = ""
+        if (token != "") {
+            Toast.makeText(context, " ", Toast.LENGTH_LONG)
+            courseViewModel.getInfoStudent(username, token, courseid)
+            courseViewModel.getInfoStudentData()
+
+            //using the CourseViewModel
+            courseViewModel.infoStudentLiveData.observe(getViewLifecycleOwner(), Observer { it ->
+                studentDetails = it.toString()
+            })
+
+        }else {
+            Toast.makeText(context, "Token failure ", Toast.LENGTH_LONG)
+                .show()
+            //newToken()
+        }
+        return studentDetails
     }
 
     fun newToken(){

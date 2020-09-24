@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.Android_WebService.model.Course
+import com.example.Android_WebService.model.GeneralUserD
 import com.example.Android_WebService.model.courseD
 import com.example.Android_WebService.repository.CourseRepository
 import org.json.JSONObject
@@ -15,6 +16,7 @@ class CourseViewModel : ViewModel() {
     //var courses = List<Course>()
     var coursesLiveData = MutableLiveData<List<Course>>()
     var studentsLiveData = MutableLiveData<courseD>()
+    var infoStudentLiveData =  MutableLiveData<GeneralUserD>()
 
     //private val repository = CourseRepository()
 
@@ -43,22 +45,13 @@ class CourseViewModel : ViewModel() {
     fun addStudent (username: String, token: String, idCourse: String){
         repository.addStudent(username, token, idCourse)
     }
-    /*
-    fun getCourses(user: String, token: String){
-        viewModelScope.launch {
-            val course = repository.getCourses(user, token) as Course
-            courses.add(course)
-            coursesLiveData.postValue(courses)
-        }
+
+    fun getInfoStudent(user: String, idStud: String, token: String){
+        repository.getInfoStudent(user, idStud, token)
     }
 
-    fun addCourse(user: String, token: String)  {
-        Log.d("MyOut", "CourseViewModel addCourses with token  <" + token+">")
-        repository.addCourse(user, token)
+    fun getInfoStudentData(){
+        infoStudentLiveData = repository.getInfoStudentData()
     }
-
-    fun getCourseData() = repository.getCourseData()*/
-
-
 
 }
