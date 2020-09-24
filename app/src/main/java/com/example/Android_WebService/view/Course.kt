@@ -13,6 +13,7 @@ import com.example.Android_WebService.R
 import com.example.Android_WebService.model.GeneralUser
 import com.example.Android_WebService.model.User
 import com.example.Android_WebService.viewmodel.CourseViewModel
+import com.example.Android_WebService.viewmodel.loginViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_course.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -23,8 +24,11 @@ class Course : Fragment(), OnUserClickListener {
     private var adapter = AdapterStudent(ArrayList(), this)
     var token = ""
     var username = ""
+    var email = ""
+    var password = ""
     var courseid = ""
     val courseViewModel: CourseViewModel by viewModels()
+    val loginViewModel: loginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +50,13 @@ class Course : Fragment(), OnUserClickListener {
         token =  requireArguments().getString("token").toString()
         username = requireArguments().getString("user").toString()
         courseid = requireArguments().getString("courseId").toString()
+        var email = requireArguments().getString("email").toString()
+        var password = requireArguments().getString("pass").toString()
         welcome()
+        view.findViewById<FloatingActionButton>(R.id.addEstudiante).setOnClickListener {
+            courseViewModel.addStudent(courseid, token)
+            welcome()
+        }
     }
 
     override fun onItemCLick(user: GeneralUser, position: Int) {
@@ -69,8 +79,16 @@ class Course : Fragment(), OnUserClickListener {
             }else {
                 Toast.makeText(context, "Token failure ", Toast.LENGTH_LONG)
                     .show()
+                //newToken()
+                //welcome()
             }
     }
 
+    fun newToken(){
+        loginViewModel.signIn(email,password,username).observe(getViewLifecycleOwner(), Observer { user: User ->
+            //Log.d("MyOut", "Fragment  signIn " + user + " error " + user.error)
+            token = user.token
+        })
+    }
 
 }

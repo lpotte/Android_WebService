@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.Android_WebService.model.Course
 import com.example.Android_WebService.model.courseD
+import com.example.Android_WebService.model.studentResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.*
@@ -123,6 +124,36 @@ class CourseApiService {
             override fun onFailure(call: Call<Course>, t: Throwable) {
                 Log.d("MyOut","Failure "+t.message)
             }
+
+        })
+    }
+
+    fun addStudent (id: String, token: String){
+        Log.d("MyOut", "addCourse with token  <" + token+">")
+        val auth = "Bearer "+token
+        getRestEngine().addStudent(id,auth).enqueue(object: Callback<studentResponse>{
+            override fun onResponse(call: Call<studentResponse>, response: Response<studentResponse>) {
+                if (response.isSuccessful) {
+                    Log.d("MyOut", "OK isSuccessful ")
+                    val loginResponse = response.body()
+                    if (loginResponse != null) {
+                        //Log.d("MyOut", "OK isSuccessful token " )
+                        //courses.add(response.body()!!)
+                        //Companion.theResponse.postValue(courses)
+                    }
+                } else {
+                    Log.d("MyOut", "NOK  "+response.code() )
+                    Log.d("MyOut", "NOK  "+response.toString() )
+                    Log.d("MyOut", "NOK  "+response.errorBody().toString() )
+                }
+            }
+
+
+            override fun onFailure(call: Call<studentResponse>, t: Throwable) {
+                Log.d("MyOut","Failure "+t.message)
+            }
+
+
 
         })
     }

@@ -119,7 +119,7 @@ class Home : Fragment(), OnCourseClickListener {
         Toast.makeText(this.context, "Professor " + course.professor, Toast.LENGTH_LONG).show()
         Log.d("Test", "Professor " + course.professor)
         var navController = findNavController()
-        var bundle = bundleOf("user" to username, "courseId" to course.id, "token" to theToken)
+        var bundle = bundleOf("user" to username, "courseId" to course.id, "token" to theToken, "email" to email, "pass" to password)
         navController.navigate(R.id.action_home2_to_course, bundle)
     }
 

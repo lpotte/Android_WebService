@@ -38,6 +38,10 @@ class CourseViewModel : ViewModel() {
     fun getStudentsData(){
         studentsLiveData = repository.getStudData()
     }
+
+    fun addStudent (id:String, token: String){
+        repository.addStudent(id, token)
+    }
     /*
     fun getCourses(user: String, token: String){
         viewModelScope.launch {
