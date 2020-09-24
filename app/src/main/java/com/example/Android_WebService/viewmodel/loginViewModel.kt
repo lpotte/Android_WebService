@@ -18,8 +18,8 @@ class loginViewModel: ViewModel() {
 
     private val repository = LoginRepository()
 
-    fun signIn(user: User) =
-        repository.signIn(user)
+    fun signIn(email: String, clave: String, usuario : String) =
+        repository.signIn(User(email, clave, usuario, usuario,"",""))
 
     fun signUp(user: User) =
         repository.signUp(user)
@@ -32,10 +32,6 @@ class loginViewModel: ViewModel() {
     }
 
     fun signInSP(email: String, clave: String, usuario : String): Boolean {
-        var user = User(email, clave, usuario, usuario,"","")
-        userLiveData = signIn(user)
-        users.clear()
-        users.add(user)
         return getUsername().equals(usuario) && getUserPassword().equals(clave)
     }
     fun signUpSP(email: String, clave: String, usuario : String) {

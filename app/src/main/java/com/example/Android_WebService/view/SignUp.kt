@@ -39,7 +39,7 @@ class SignUp : Fragment() {
         navController = Navigation.findNavController(view)
 
         view.findViewById<Button>(R.id.submit ).setOnClickListener {
-            val email : String =  "user2@correo.com"
+            var email = requireView().findViewById<EditText>(R.id.email).text.toString()
             var user = requireView().findViewById<EditText>(R.id.username).text.toString()
             var pass = requireView().findViewById<EditText>(R.id.pass).text.toString()
 

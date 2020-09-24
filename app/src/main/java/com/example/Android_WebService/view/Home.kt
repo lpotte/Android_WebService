@@ -14,6 +14,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.Android_WebService.R
+import com.example.Android_WebService.model.User
 import com.example.Android_WebService.repository.api.Post
 import com.example.Android_WebService.viewmodel.CourseViewModel
 import com.example.Android_WebService.viewmodel.PostViewModel
@@ -29,8 +30,11 @@ class Home : Fragment() {
     val courseViewModel: CourseViewModel by viewModels()
     private var adapter = Adapter(ArrayList())
     lateinit var posts : List<Post>
-    var token = ""
-    var username = "h"
+    var theToken = ""
+    var username = ""
+    var password = ""
+    var email = ""
+    lateinit var usu: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,16 +70,30 @@ class Home : Fragment() {
             adapter.notifyDataSetChanged()
         })
 
+        //token = requireArguments().getString("token").toString()
+        username = requireArguments().getString("name").toString()
+        password = requireArguments().getString("pass").toString()
+        email = requireArguments().getString("email").toString()
+
         //Floating Buttom
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
 
             //val usuario : String = "elprofesor"
             //loginViewModel.getUsername()
             //loginViewModel.getToken()
-            token = loginViewModel.users[0].token
-            username = loginViewModel.users[0].name
-            courseViewModel.addCourse(username,token)
-            courseViewModel.getCourses(username,token)
+            loginViewModel.signIn(email,password,username).observe(getViewLifecycleOwner(), Observer { user: User ->
+                //Log.d("MyOut", "Fragment  signIn " + user + " error " + user.error)
+                theToken = user.token
+                if (user.token != "") {
+                    Toast.makeText(context, "Token " + user.token, Toast.LENGTH_LONG).show()
+                    courseViewModel.addCourse(username,theToken)
+                    courseViewModel.getCourses(username,theToken)
+                    courseViewModel.getCourseData()
+                } else {
+                    Toast.makeText(context, "Token failure " + user.error, Toast.LENGTH_LONG)
+                        .show()
+                }
+            })
             //postViewModel.getPost()
         }
 

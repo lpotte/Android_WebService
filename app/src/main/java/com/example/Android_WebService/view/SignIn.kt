@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -50,22 +51,27 @@ class SignIn : Fragment() {
     private fun looged() {
         var user = requireView().findViewById<EditText>(R.id.username).text.toString()
         var pass = requireView().findViewById<EditText>(R.id.pass).text.toString()
+        var email = requireView().findViewById<EditText>(R.id.email).text.toString()
 
-       if(loginViewModel.signInSP("user2@correo.com", pass, user)){
-          loginViewModel.userLiveData.observe(getViewLifecycleOwner(), Observer { it ->
+       if(loginViewModel.signInSP(email, pass, user)){
+           var bundle = bundleOf("email" to email, "name" to user, "pass" to pass)
+           navController.navigate(R.id.action_signIn_to_home2, bundle)
+          /*loginViewModel.userLiveData.observe(getViewLifecycleOwner(), Observer { it ->
               Toast.makeText(context, "name 1 " + it.username, Toast.LENGTH_LONG).show()
               theToken = it.token
               loginViewModel.setToken(theToken)
               if (it.token != "") {
                   Toast.makeText(context, "Token " + it.token, Toast.LENGTH_LONG).show()
                   //loginViewModel.setuser(it)
-                  navController.navigate(R.id.action_signIn_to_home2)
+                  //userPlayer = Player("ettop", 1000)
+                  var bundle = bundleOf("token" to it.token, "name" to it.name)
+                  navController.navigate(R.id.action_signIn_to_home2, bundle)
                   //courseViewModel.getCourses("elprofesor",theToken)
               } else {
                   Toast.makeText(context, "Token failure " + it.error, Toast.LENGTH_LONG)
                       .show()
               }
-           })
+           })*/
 
           // navController.navigate(R.id.action_signIn_to_home2)
            /* loginViewModel.signIn("molinares@correo.com",pass,user).observe(getViewLifecycleOwner(), Observer { user: User ->

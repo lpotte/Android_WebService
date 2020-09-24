@@ -14,18 +14,25 @@ class CourseViewModel : ViewModel() {
 
     private val repository = CourseRepository()
     val courses = mutableListOf<Course>()
-    val coursesLiveData = MutableLiveData<List<Course>>()
+    var coursesLiveData = MutableLiveData<List<Course>>()
 
     //private val repository = CourseRepository()
 
-    fun getCourses(user: String, token: String) = repository.getCourses(user, token)
+    fun getCourses(user: String, token: String){
+        Log.d("MyOut", "CourseViewModel getCourses with token  <" + token+">")
+        repository.getCourses(user, token)
+    }
 
     fun addCourse(user: String, token: String)  {
         Log.d("MyOut", "CourseViewModel addCourses with token  <" + token+">")
         repository.addCourse(user, token)
     }
 
-    fun getCourseData() = repository.getCourseData()
+    fun getCourseData() {
+        viewModelScope.launch {
+            coursesLiveData = repository.getCourseData()
+        }
+    }
     /*
     fun getCourses(user: String, token: String){
         viewModelScope.launch {
