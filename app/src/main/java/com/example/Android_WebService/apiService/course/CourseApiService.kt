@@ -49,10 +49,10 @@ class CourseApiService {
                         //theResponse.value = response.body()
                         theResponseDetails.postValue(response.body())
                         //students.clear()
-                        val t = response.body() as MutableLiveData<courseD>
+                        val t = response.body()
                         //students.addAll(t)
                         //theResponseDetails.postValue(students)
-                        theResponseDetails = t
+                        theResponseDetails.postValue(t)
                     }
                 } else {
                     Log.d("MyOut", "NOK  "+response.code() )

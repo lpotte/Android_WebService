@@ -47,13 +47,11 @@ class Course : Fragment(), OnUserClickListener {
         username = requireArguments().getString("user").toString()
         courseid = requireArguments().getString("courseId").toString()
         welcome()
-        view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
-
-        }
     }
 
     override fun onItemCLick(user: GeneralUser, position: Int) {
-
+        Toast.makeText(context, "Test", Toast.LENGTH_LONG)
+            .show()
     }
 
     fun welcome(){
@@ -61,7 +59,7 @@ class Course : Fragment(), OnUserClickListener {
                 courseViewModel.getStudents(username, token, courseid)
                 courseViewModel.getStudentsData()
                 //using the CourseViewModel
-                courseViewModel.studentsLiveData.observe(getViewLifecycleOwner(), Observer { it ->
+               courseViewModel.studentsLiveData.observe(getViewLifecycleOwner(), Observer { it ->
                     Toast.makeText(context, "users  failure ", Toast.LENGTH_LONG)
                     adapter.students.clear()
                     adapter.students.addAll(it.students)
