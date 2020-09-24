@@ -3,6 +3,7 @@ package com.example.Android_WebService.apiService.course
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.Android_WebService.model.Course
+import com.example.Android_WebService.model.courseD
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.*
@@ -14,7 +15,9 @@ class CourseApiService {
     companion object{
 
         val theResponse = MutableLiveData<List<Course>>()
+        var theResponseDetails = MutableLiveData<courseD>()
         var courses = mutableListOf<Course>()
+        var students = mutableListOf<courseD>()
 
         fun getRestEngine(): CourseApi {
             val interceptor = HttpLoggingInterceptor()
@@ -33,8 +36,38 @@ class CourseApiService {
 
     fun getCourseData() = theResponse
 
+    fun getStudData() = theResponseDetails
 
-     fun getCourses(user: String, token: String){
+    fun getStud(user: String, token: String, id: String){
+        val auth = "Bearer "+token
+        getRestEngine().showCourse(user, id, auth).enqueue(object: Callback<courseD>{
+            override fun onResponse(call: Call<courseD>, response: Response<courseD>) {
+                if (response.isSuccessful) {
+                    Log.d("MyOut", "OK isSuccessful ")
+                    val loginResponse = response.body()
+                    if (loginResponse != null) {
+                        //theResponse.value = response.body()
+                        theResponseDetails.postValue(response.body())
+                        //students.clear()
+                        val t = response.body() as MutableLiveData<courseD>
+                        //students.addAll(t)
+                        //theResponseDetails.postValue(students)
+                        theResponseDetails = t
+                    }
+                } else {
+                    Log.d("MyOut", "NOK  "+response.code() )
+                    Log.d("MyOut", "NOK  "+response.toString() )
+                    Log.d("MyOut", "NOK  "+response.errorBody().toString() )
+                }
+            }
+
+            override fun onFailure(call: Call<courseD>, t: Throwable) {
+                Log.d("MyOut","Failure "+t.message)
+            }
+        })
+
+    }
+    fun getCourses(user: String, token: String){
 
         //Log.d("MyOut", "getCourses with token  <" + token+">")
         val auth = "Bearer "+token
