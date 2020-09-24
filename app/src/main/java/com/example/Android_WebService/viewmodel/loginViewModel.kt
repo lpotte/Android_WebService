@@ -1,14 +1,9 @@
 package com.example.Android_WebService.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.Android_WebService.model.User
 import com.example.Android_WebService.repository.LoginRepository
-import com.example.Android_WebService.repository.Repository
-import com.example.Android_WebService.repository.api.Post
-import com.example.Android_WebService.sharedPreference.Provider.Companion.getPassword
-import com.example.Android_WebService.sharedPreference.Provider.Companion.getUserName
 
 class loginViewModel: ViewModel() {
 

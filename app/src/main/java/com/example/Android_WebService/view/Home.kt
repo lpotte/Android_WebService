@@ -16,9 +16,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.Android_WebService.R
 import com.example.Android_WebService.model.User
-import com.example.Android_WebService.repository.api.Post
 import com.example.Android_WebService.viewmodel.CourseViewModel
-import com.example.Android_WebService.viewmodel.PostViewModel
 import com.example.Android_WebService.viewmodel.loginViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_home.view.*
@@ -27,10 +25,8 @@ import kotlin.collections.List
 class Home : Fragment() {
     lateinit var navController: NavController
     val loginViewModel: loginViewModel by viewModels()
-    val postViewModel: PostViewModel by viewModels()
     val courseViewModel: CourseViewModel by viewModels()
     private var adapter = Adapter(ArrayList())
-    lateinit var posts : List<Post>
     var theToken = ""
     var username = ""
     var password = ""

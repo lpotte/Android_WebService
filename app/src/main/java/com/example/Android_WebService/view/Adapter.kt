@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.Android_WebService.R
 import com.example.Android_WebService.model.Course
-import com.example.Android_WebService.repository.api.Post
 import kotlinx.android.synthetic.main.fragment_list.view.*
 
 class Adapter(val courses: ArrayList<Course>): RecyclerView.Adapter<Adapter.ViewHolder>() {
