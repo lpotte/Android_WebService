@@ -1,5 +1,6 @@
 package com.example.Android_WebService.view
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -17,6 +18,9 @@ import com.example.Android_WebService.viewmodel.loginViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_course.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.userinfo_dialog.view.*
+import org.json.JSONObject
+import java.net.URLEncoder
 
 
 class Course : Fragment(), OnUserClickListener {
@@ -54,7 +58,9 @@ class Course : Fragment(), OnUserClickListener {
         var password = requireArguments().getString("pass").toString()
         welcome()
         view.findViewById<FloatingActionButton>(R.id.addEstudiante).setOnClickListener {
-            courseViewModel.addStudent(courseid, token)
+            val rootObject= JSONObject()
+            rootObject.put("courseId",courseid)
+            courseViewModel.addStudent(username, token, courseid)
             welcome()
         }
     }
@@ -62,6 +68,16 @@ class Course : Fragment(), OnUserClickListener {
     override fun onItemCLick(user: GeneralUser, position: Int) {
         Toast.makeText(context, "Test", Toast.LENGTH_LONG)
             .show()
+        val mDialogView = LayoutInflater.from(this.context).inflate(R.layout.userinfo_dialog, null)
+
+        val mBuilder = AlertDialog.Builder(this.context)
+            .setView(mDialogView)
+            .setTitle("Student Info")
+
+        val mAlertDialog = mBuilder.show()
+        mDialogView.closeBtn.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
     }
 
     fun welcome(){

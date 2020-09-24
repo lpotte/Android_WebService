@@ -1,6 +1,7 @@
 package com.example.Android_WebService.repository
 
 import com.example.Android_WebService.apiService.course.CourseApiService
+import org.json.JSONObject
 
 class CourseRepository {
 
@@ -16,5 +17,5 @@ class CourseRepository {
 
     fun getStudData() = service.getStudData()
 
-    fun addStudent(id:String, token: String) = service.addStudent(id, token)
+    fun addStudent(username: String, token: String, idCourse: String) = service.addStudent(username, token, idCourse)
 }

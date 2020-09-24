@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.Android_WebService.model.Course
 import com.example.Android_WebService.model.courseD
 import com.example.Android_WebService.repository.CourseRepository
+import org.json.JSONObject
 
 
 class CourseViewModel : ViewModel() {
@@ -39,8 +40,8 @@ class CourseViewModel : ViewModel() {
         studentsLiveData = repository.getStudData()
     }
 
-    fun addStudent (id:String, token: String){
-        repository.addStudent(id, token)
+    fun addStudent (username: String, token: String, idCourse: String){
+        repository.addStudent(username, token, idCourse)
     }
     /*
     fun getCourses(user: String, token: String){

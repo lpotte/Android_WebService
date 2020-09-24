@@ -7,6 +7,7 @@ import com.example.Android_WebService.model.courseD
 import com.example.Android_WebService.model.studentResponse
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONObject
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -128,10 +129,10 @@ class CourseApiService {
         })
     }
 
-    fun addStudent (id: String, token: String){
+    fun addStudent (username: String, token: String, idCourse: String){
         Log.d("MyOut", "addCourse with token  <" + token+">")
         val auth = "Bearer "+token
-        getRestEngine().addStudent(id,auth).enqueue(object: Callback<studentResponse>{
+        getRestEngine().addStudent(username,auth,idCourse).enqueue(object: Callback<studentResponse>{
             override fun onResponse(call: Call<studentResponse>, response: Response<studentResponse>) {
                 if (response.isSuccessful) {
                     Log.d("MyOut", "OK isSuccessful ")

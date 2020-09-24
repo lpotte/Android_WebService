@@ -58,7 +58,7 @@
         android:padding="10sp">
 
         <Button
-            android:id="@+id/close"
+            android:id="@+id/closeBtn"
             style="@style/Base.CardView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
