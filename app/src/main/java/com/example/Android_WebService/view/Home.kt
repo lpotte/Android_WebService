@@ -8,13 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.Android_WebService.R
+import com.example.Android_WebService.model.Course
 import com.example.Android_WebService.model.User
 import com.example.Android_WebService.viewmodel.CourseViewModel
 import com.example.Android_WebService.viewmodel.loginViewModel
@@ -22,11 +25,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_home.view.*
 import kotlin.collections.List
 
-class Home : Fragment() {
+class Home : Fragment(), OnCourseClickListener {
     lateinit var navController: NavController
     val loginViewModel: loginViewModel by viewModels()
     val courseViewModel: CourseViewModel by viewModels()
-    private var adapter = Adapter(ArrayList())
+    private var adapter = Adapter(ArrayList(), this)
     var theToken = ""
     var username = ""
     var password = ""
@@ -79,12 +82,7 @@ class Home : Fragment() {
 
         //Floating Buttom
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
-
-            //val usuario : String = "elprofesor"
-            //loginViewModel.getUsername()
-            //loginViewModel.getToken()
             welcome()
-
         }
 
         //Navegación de sign out
@@ -116,5 +114,15 @@ class Home : Fragment() {
         })
         //postViewModel.getPost()
     }
+
+    override fun onItemCLick(course: Course, position: Int) {
+        Toast.makeText(this.context, "Professor " + course.professor, Toast.LENGTH_LONG).show()
+        Log.d("Test", "Professor " + course.professor)
+        var navController = findNavController()
+        var bundle = bundleOf("user" to username, "courseId" to course.id, "token" to theToken)
+        navController.navigate(R.id.action_home2_to_course, bundle)
+    }
+
+
 }
 
