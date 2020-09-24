@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class CourseViewModel : ViewModel() {
 
     private val repository = CourseRepository()
-    val courses = mutableListOf<Course>()
+    //var courses = List<Course>()
     var coursesLiveData = MutableLiveData<List<Course>>()
 
     //private val repository = CourseRepository()
@@ -29,9 +29,7 @@ class CourseViewModel : ViewModel() {
     }
 
     fun getCourseData() {
-        viewModelScope.launch {
-            coursesLiveData = repository.getCourseData()
-        }
+        coursesLiveData = repository.getCourseData()
     }
     /*
     fun getCourses(user: String, token: String){

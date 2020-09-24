@@ -1,6 +1,7 @@
 package com.example.Android_WebService.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -65,6 +66,7 @@ class Home : Fragment() {
 
         //using the CourseViewModel
         courseViewModel.coursesLiveData.observe(getViewLifecycleOwner(), Observer { it ->
+            Toast.makeText(context, "Token cambió", Toast.LENGTH_LONG).show()
             adapter.courses.clear()
             adapter.courses.addAll(it)
             adapter.notifyDataSetChanged()
@@ -75,26 +77,18 @@ class Home : Fragment() {
         password = requireArguments().getString("pass").toString()
         email = requireArguments().getString("email").toString()
 
+
+        // iniciar sesión automaticamente
+        welcome()
+
         //Floating Buttom
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
 
             //val usuario : String = "elprofesor"
             //loginViewModel.getUsername()
             //loginViewModel.getToken()
-            loginViewModel.signIn(email,password,username).observe(getViewLifecycleOwner(), Observer { user: User ->
-                //Log.d("MyOut", "Fragment  signIn " + user + " error " + user.error)
-                theToken = user.token
-                if (user.token != "") {
-                    Toast.makeText(context, "Token " + user.token, Toast.LENGTH_LONG).show()
-                    courseViewModel.addCourse(username,theToken)
-                    courseViewModel.getCourses(username,theToken)
-                    courseViewModel.getCourseData()
-                } else {
-                    Toast.makeText(context, "Token failure " + user.error, Toast.LENGTH_LONG)
-                        .show()
-                }
-            })
-            //postViewModel.getPost()
+            welcome()
+
         }
 
         //Navegación de sign out
@@ -103,9 +97,28 @@ class Home : Fragment() {
             navController.navigate(R.id.action_home2_to_signIn)
         }
 
+    }
 
-
-
+    fun welcome(){
+        loginViewModel.signIn(email,password,username).observe(getViewLifecycleOwner(), Observer { user: User ->
+            //Log.d("MyOut", "Fragment  signIn " + user + " error " + user.error)
+            theToken = user.token
+            if (user.token != "") {
+                courseViewModel.addCourse(username,theToken)
+                courseViewModel.getCourses(username,theToken)
+                courseViewModel.getCourseData()
+                //using the CourseViewModel
+                courseViewModel.coursesLiveData.observe(getViewLifecycleOwner(), Observer { it ->
+                    adapter.courses.clear()
+                    adapter.courses.addAll(it)
+                    adapter.notifyDataSetChanged()
+                })
+            } else {
+                Toast.makeText(context, "Token failure " + user.error, Toast.LENGTH_LONG)
+                    .show()
+            }
+        })
+        //postViewModel.getPost()
     }
 }
 
