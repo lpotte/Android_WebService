@@ -1,9 +1,6 @@
 package com.example.Android_WebService.apiService.course
 
-import com.example.Android_WebService.model.Course
-import com.example.Android_WebService.model.User
-import com.example.Android_WebService.model.courseD
-import com.example.Android_WebService.model.studentResponse
+import com.example.Android_WebService.model.*
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Call
@@ -24,5 +21,7 @@ interface CourseApi {
     @POST("{dbId}/students")
     fun addStudent(@Path("dbId") user: String, @Header ("Authorization") header: String, @Field("courseId") courseId: String ): Call<studentResponse>
 
+    @GET("{dbId}/students/{studentId}")
+    fun viewStudent(@Path("dbId") user: String,@Path("studentId") studentId: String, @Header("Authorization") header: String): Call<GeneralUserD>
 
 }
