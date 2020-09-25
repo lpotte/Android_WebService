@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
@@ -21,7 +23,12 @@ import com.example.Android_WebService.viewmodel.loginViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.android.synthetic.main.fragment_course.view.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
+import kotlinx.android.synthetic.main.userinfo_dialog.*
 import kotlinx.android.synthetic.main.userinfo_dialog.view.*
+import kotlinx.android.synthetic.main.userinfo_dialog.view.birthday
+import kotlinx.android.synthetic.main.userinfo_dialog.view.city
+import kotlinx.android.synthetic.main.userinfo_dialog.view.country
+import kotlinx.android.synthetic.main.userinfo_dialog.view.phone
 import org.json.JSONObject
 import java.net.URLEncoder
 
@@ -73,7 +80,10 @@ class Course : Fragment(), OnUserClickListener {
     override fun onItemCLick(user: GeneralUser, position: Int) {
         Toast.makeText(context, "Test ", Toast.LENGTH_LONG)
             .show()
-        val mDialogView = LayoutInflater.from(this.context).inflate(R.layout.userinfo_dialog, null)
+
+        var mDialogView = LayoutInflater.from(this.context).inflate(R.layout.userinfo_dialog, null)
+
+        mDialogView = awaitDetails(mDialogView, user.id)
 
         val mBuilder = AlertDialog.Builder(this.context)
             .setView(mDialogView)
@@ -83,7 +93,22 @@ class Course : Fragment(), OnUserClickListener {
         mDialogView.closeBtn.setOnClickListener {
             mAlertDialog.dismiss()
         }
-        mDialogView.userName.text = viewStudentInfo(user.id).name
+    }
+
+    fun awaitDetails(mDialogView: View, id: String): View {
+        val infoStudent = viewStudentInfo(id)
+
+        mDialogView.userName.text = infoStudent.name
+        mDialogView.username.text = infoStudent.username
+
+        mDialogView.courseId.text = infoStudent.course_id
+        mDialogView.phone.text = infoStudent.phone
+        mDialogView.email.text = infoStudent.email
+        mDialogView.city.text = infoStudent.city
+        mDialogView.birthday.text = infoStudent.birthday
+        mDialogView.userName.text = infoStudent.name
+
+        return mDialogView
     }
 
     fun welcome(){
@@ -111,7 +136,7 @@ class Course : Fragment(), OnUserClickListener {
 
     fun viewStudentInfo(studentid: String): GeneralUserD {
         //newToken()
-        lateinit var studentDetails: GeneralUserD
+        var studentDetails: GeneralUserD = GeneralUserD("","","","","","","","")
         if (token != "") {
             Toast.makeText(context, " ", Toast.LENGTH_LONG)
             courseViewModel.getInfoStudent(username, studentid, token)
