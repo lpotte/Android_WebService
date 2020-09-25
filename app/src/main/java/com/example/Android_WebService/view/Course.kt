@@ -13,7 +13,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.Android_WebService.R
 import com.example.Android_WebService.model.GeneralUser
+import com.example.Android_WebService.model.GeneralUserD
 import com.example.Android_WebService.model.User
+import com.example.Android_WebService.model.studentResponse
 import com.example.Android_WebService.viewmodel.CourseViewModel
 import com.example.Android_WebService.viewmodel.loginViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -69,7 +71,7 @@ class Course : Fragment(), OnUserClickListener {
     }
 
     override fun onItemCLick(user: GeneralUser, position: Int) {
-        Toast.makeText(context, "Test "+ viewStudentInfo(user.id), Toast.LENGTH_LONG)
+        Toast.makeText(context, "Test ", Toast.LENGTH_LONG)
             .show()
         val mDialogView = LayoutInflater.from(this.context).inflate(R.layout.userinfo_dialog, null)
 
@@ -81,7 +83,7 @@ class Course : Fragment(), OnUserClickListener {
         mDialogView.closeBtn.setOnClickListener {
             mAlertDialog.dismiss()
         }
-        // mDialogView.userName.text =
+        mDialogView.userName.text = viewStudentInfo(user.id).name
     }
 
     fun welcome(){
@@ -107,9 +109,9 @@ class Course : Fragment(), OnUserClickListener {
             }
     }
 
-    fun viewStudentInfo(studentid: String): String {
+    fun viewStudentInfo(studentid: String): GeneralUserD {
         //newToken()
-        var studentDetails = ""
+        lateinit var studentDetails: GeneralUserD
         if (token != "") {
             Toast.makeText(context, " ", Toast.LENGTH_LONG)
             courseViewModel.getInfoStudent(username, studentid, token)
@@ -117,7 +119,7 @@ class Course : Fragment(), OnUserClickListener {
 
             //using the CourseViewModel
             courseViewModel.infoStudentLiveData.observe(getViewLifecycleOwner(), Observer { it ->
-                studentDetails = it.toString()
+                studentDetails = it
             })
 
         }else {
