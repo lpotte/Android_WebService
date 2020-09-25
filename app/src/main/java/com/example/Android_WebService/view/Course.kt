@@ -69,7 +69,7 @@ class Course : Fragment(), OnUserClickListener {
     }
 
     override fun onItemCLick(user: GeneralUser, position: Int) {
-        Toast.makeText(context, "Test "+ viewStudentInfo(), Toast.LENGTH_LONG)
+        Toast.makeText(context, "Test "+ viewStudentInfo(user.id), Toast.LENGTH_LONG)
             .show()
         val mDialogView = LayoutInflater.from(this.context).inflate(R.layout.userinfo_dialog, null)
 
@@ -81,6 +81,7 @@ class Course : Fragment(), OnUserClickListener {
         mDialogView.closeBtn.setOnClickListener {
             mAlertDialog.dismiss()
         }
+        // mDialogView.userName.text =
     }
 
     fun welcome(){
@@ -106,12 +107,12 @@ class Course : Fragment(), OnUserClickListener {
             }
     }
 
-    fun viewStudentInfo(): String {
+    fun viewStudentInfo(studentid: String): String {
         //newToken()
         var studentDetails = ""
         if (token != "") {
             Toast.makeText(context, " ", Toast.LENGTH_LONG)
-            courseViewModel.getInfoStudent(username, token, courseid)
+            courseViewModel.getInfoStudent(username, studentid, token)
             courseViewModel.getInfoStudentData()
 
             //using the CourseViewModel
