@@ -187,4 +187,24 @@ class CourseApiService {
         })
     }
 
+    fun reset(user: String, token: String) {
+        val auth = "Bearer "+token
+        getRestEngine().reset(user, token).enqueue(object: Callback<Boolean>{
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                if (response.isSuccessful) {
+                    Log.d("MyOut", "Ok isSuccessful")
+
+                } else {
+                    Log.d("MyOut", "NOK  "+response.code() )
+                    Log.d("MyOut", "NOK  "+response.toString() )
+                    Log.d("MyOut", "NOK  "+response.errorBody().toString() )
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                Log.d("myOut", "Failure "+t.message)
+            }
+        })
+    }
+
 }

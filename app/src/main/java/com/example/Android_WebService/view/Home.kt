@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -84,6 +85,10 @@ class Home : Fragment(), OnCourseClickListener {
         view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
             welcome()
         }
+
+        /*view.findViewById<AppCompatImageView>(R.id.resetBtn).setOnClickListener {
+            courseViewModel.reset(username, theToken)
+        }*/
 
         //Navegación de sign out
         navController = Navigation.findNavController(view)

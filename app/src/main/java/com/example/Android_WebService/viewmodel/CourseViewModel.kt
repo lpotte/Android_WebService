@@ -54,4 +54,8 @@ class CourseViewModel : ViewModel() {
         infoStudentLiveData = repository.getInfoStudentData()
     }
 
+    fun reset(user: String, token: String) {
+        repository.reset(user, token)
+    }
+
 }

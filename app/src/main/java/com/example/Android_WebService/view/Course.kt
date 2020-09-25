@@ -63,8 +63,6 @@ class Course : Fragment(), OnUserClickListener {
         view.findViewById<TextView>(R.id.courseName).setText(nameCourse)
         view.findViewById<TextView>(R.id.professorName).setText(profesorName)
         view.findViewById<FloatingActionButton>(R.id.addEstudiante).setOnClickListener {
-            val rootObject= JSONObject()
-            rootObject.put("courseId",courseid)
             courseViewModel.addStudent(username, token, courseid)
             welcome()
         }

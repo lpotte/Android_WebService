@@ -24,4 +24,6 @@ interface CourseApi {
     @GET("{dbId}/students/{studentId}")
     fun viewStudent(@Path("dbId") user: String,@Path("studentId") studentId: String, @Header("Authorization") header: String): Call<GeneralUserD>
 
+    @POST("{dbId}/restart")
+    fun reset(@Path("dbId") user: String, @Header ("Authorization") header: String): Call<Boolean>
 }

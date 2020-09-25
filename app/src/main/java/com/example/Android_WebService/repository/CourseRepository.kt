@@ -22,4 +22,6 @@ class CourseRepository {
     fun getInfoStudent(user: String, idStud: String, token: String) = service.getInfoStudent(user, idStud, token)
 
     fun getInfoStudentData() = service.getInfoStudentData()
+
+    fun reset(user: String, token: String) = service.reset(user, token)
 }
